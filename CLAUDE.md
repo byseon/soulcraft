@@ -13,6 +13,8 @@ If a subtask stalls, flag it. The boulder keeps rolling.
 - `shared/discussions/` — Per-topic discussion threads
 
 ## Agent Coordination
+- **All requests go to HAL unless a specific agent is named or invoked directly.** HAL triages, updates the task board, and delegates to the right agent.
+- Users can bypass HAL by naming an agent ("Use koah to...") or role ("ask the backend engineer to...").
 - HAL plans and assigns. Other agents execute.
 - Agents update TASK_BOARD.md when starting or finishing work.
 - Cross-agent handoffs are explicit: "Handing off to Dia for frontend."

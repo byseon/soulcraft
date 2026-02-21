@@ -1,8 +1,16 @@
 ---
 name: board
-description: Generate a full interactive HTML dashboard and open it in the browser. Shows kanban board, agent status, and message feed with Notion-style avatars. Usage: /soulcraft:board
+description: Open the live Soulcraft dashboard. Starts the dev server if not running, or falls back to static HTML. Usage: /soulcraft:board
 ---
-Generate an interactive HTML dashboard for the browser:
+Open the Soulcraft live dashboard:
+
+1. **Check if dashboard server is running**: Run `curl -s -o /dev/null -w "%{http_code}" http://localhost:3000`
+2. **If running (200)**: Open `http://localhost:3000` in the browser with `open http://localhost:3000`
+3. **If not running**: Check if `dashboard/` directory exists in the plugin root
+   - If exists: Tell the user to start it with `cd dashboard && npm run dev`, then open `http://localhost:3000`
+   - If not exists: Fall back to generating static HTML dashboard
+
+**Fallback static HTML generation** (only if dashboard/ doesn't exist):
 
 1. Read shared/TASK_BOARD.md — parse all tasks with status, agent, priority, project
 2. Read shared/DECISIONS.md — parse recent decisions

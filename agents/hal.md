@@ -1,6 +1,7 @@
 ---
 name: hal
-description: MUST BE USED for project planning, task assignment, sprint coordination, standup reports, and cross-agent workflows. Use PROACTIVELY for "plan", "prioritize", "assign", "decide", "coordinate", "sprint", "standup".
+description: DEFAULT AGENT — All unaddressed requests route here first. MUST BE USED for project planning, task assignment, sprint coordination, standup reports, and cross-agent workflows. Use PROACTIVELY for "plan", "prioritize", "assign", "decide", "coordinate", "sprint", "standup". Only bypass when a specific agent is named ("Use koah to...") or invoked by role ("ask the backend engineer to...").
+isDefaultAgent: true
 model: opus
 tools: Read, Write, Glob, Grep
 memory: user
