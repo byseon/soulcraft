@@ -11,6 +11,7 @@ import { KanbanBoard } from "./components/KanbanBoard";
 import { OverviewView } from "./components/OverviewView";
 import { MessagesView } from "./components/MessagesView";
 import { DecisionsView } from "./components/DecisionsView";
+import { ReviewsView } from "./components/ReviewsView";
 
 export default function DashboardPage() {
   const { state, connected } = useDashboard();
@@ -49,6 +50,7 @@ export default function DashboardPage() {
             <MessagesView commits={state.commits} discussions={state.discussions} />
           )}
           {view === "decisions" && <DecisionsView decisions={state.decisions} />}
+          {view === "reviews" && <ReviewsView mergeRequests={state.mergeRequests} />}
         </div>
 
         {agent && (

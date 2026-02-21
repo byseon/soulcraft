@@ -2,7 +2,8 @@ export type Priority = "P0" | "P1" | "P2" | "P3";
 export type TaskStatus = "backlog" | "in_progress" | "review" | "done";
 export type AgentStatusValue = "active" | "idle" | "offline";
 export type Tier = "lead" | "core" | "support" | "audit";
-export type ViewType = "overview" | "board" | "messages" | "decisions";
+export type ViewType = "overview" | "board" | "messages" | "decisions" | "reviews";
+export type MRStatus = "IN_PROGRESS" | "READY_FOR_REVIEW" | "CHANGES_REQUESTED" | "MERGED";
 
 export interface Task {
   id: string;
@@ -42,6 +43,20 @@ export interface GitCommit {
   refs: string;
 }
 
+export interface MergeRequest {
+  id: string;
+  title: string;
+  agent: string;
+  branch: string;
+  worktree: string;
+  status: MRStatus;
+  created: string;
+  submitted: string;
+  filesChanged: string;
+  summary: string;
+  feedback: string;
+}
+
 export interface Agent {
   id: string;
   name: string;
@@ -60,6 +75,7 @@ export interface DashboardState {
   tasks: Task[];
   decisions: Decision[];
   discussions: Discussion[];
+  mergeRequests: MergeRequest[];
   commits: GitCommit[];
   agentStatuses: Record<string, AgentStatusValue>;
   lastUpdated: string;

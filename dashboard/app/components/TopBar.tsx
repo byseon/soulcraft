@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import type { ViewType } from "@/lib/types";
 
-const VIEWS: ViewType[] = ["overview", "board", "messages", "decisions"];
+const VIEWS: ViewType[] = ["overview", "board", "messages", "decisions", "reviews"];
 
 interface TopBarProps {
   view: ViewType;

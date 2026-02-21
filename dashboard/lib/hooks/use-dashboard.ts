@@ -9,6 +9,7 @@ const EMPTY_STATE: DashboardState = {
   tasks: [],
   decisions: [],
   discussions: [],
+  mergeRequests: [],
   commits: [],
   agentStatuses: {},
   lastUpdated: "",

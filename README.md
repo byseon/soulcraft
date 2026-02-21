@@ -220,7 +220,7 @@ Or use the command:
 
 ### Dashboard Views
 
-The dashboard has **4 views** accessible via tabs:
+The dashboard has **5 views** accessible via tabs:
 
 #### Overview
 Stats grid (in progress / review / done / active agents), agent grid with status indicators, and recent git commits.
@@ -239,6 +239,9 @@ Activity feed combining git commits and discussion thread summaries.
 Architecture Decision Records from `shared/DECISIONS.md`.
 
 ![Decisions View](docs/images/dashboard-decisions.png)
+
+#### Reviews
+Merge request queue from `shared/MERGE_REQUESTS.md`. Shows pending reviews, in-progress worktrees, change requests, and merged branches — grouped by status with agent styling and diff summaries.
 
 ### Agent Dock
 
@@ -340,13 +343,17 @@ Soulcraft initialized
 
 ### `/soulcraft:assign {agent} "{task}" [priority]`
 
-Assign a task to a specific agent and add it to the task board.
+Assign a task to a specific agent with an isolated git worktree.
 
 ```
 > /soulcraft:assign koah "scoring API v3"
-> /soulcraft:assign dia "hero section animation" P1
-> /soulcraft:assign boa "auth flow review" P0
+
+Task T012 assigned to @koah
+  Worktree: .worktrees/t012-scoring-api-v3
+  Branch:   agent/koah/t012-scoring-api-v3
 ```
+
+Each agent works in an isolated worktree — no file conflicts between parallel agents. When done, they submit a merge request for HAL to review.
 
 Priority levels: P0 (critical) → P1 (high) → P2 (medium, default) → P3 (low)
 
@@ -448,6 +455,7 @@ Agents coordinate through files in `shared/` at the project root:
 shared/
 ├── TASK_BOARD.md       # Kanban: Backlog → In Progress → Review → Done
 ├── DECISIONS.md        # Architecture decision records (append-only)
+├── MERGE_REQUESTS.md   # Agent worktree branches pending review
 └── discussions/        # Per-topic discussion threads
     └── 2026-02-20-alignment-approach.md
 ```
@@ -469,6 +477,34 @@ Agent statuses are derived from their task assignments:
 - **Idle** (yellow): Has tasks in "Review" or "Backlog" only
 - **Offline** (gray): No tasks assigned
 
+### Git Worktree Workflow
+
+Each agent works in an isolated git worktree to prevent file conflicts between parallel agents.
+
+```mermaid
+sequenceDiagram
+    participant HAL as HAL (assign)
+    participant WT as Git Worktree
+    participant Agent as Agent
+    participant MR as MERGE_REQUESTS.md
+    participant Review as HAL (review)
+
+    HAL->>WT: git worktree add .worktrees/t012-slug
+    HAL->>Agent: Work in .worktrees/t012-slug
+    Agent->>Agent: Commits in isolated worktree
+    Agent->>MR: Submit merge request (READY_FOR_REVIEW)
+    Review->>MR: Read diff + summary
+    alt Approved
+        Review->>WT: git merge + worktree remove
+        Review->>MR: Status → MERGED
+    else Rejected
+        Review->>MR: Status → CHANGES_REQUESTED + feedback
+        Review->>Agent: Continue working
+    end
+```
+
+**Status flow**: `IN_PROGRESS` → `READY_FOR_REVIEW` → `MERGED` (or `CHANGES_REQUESTED` → loop back)
+
 ---
 
 ## Skills
@@ -480,6 +516,7 @@ You don't invoke them directly — agents load them when relevant.
 |-------|------------|-----------------|
 | task-management | Agent reads/writes task board | TASK_BOARD.md format rules |
 | discussion | Creating/managing discussions | Discussion thread template |
+| merge-request | Agent finishes work in worktree | Submit → review → merge protocol |
 | security-audit | Running security reviews | Systematic checklist |
 | code-review | Reviewing code or PRs | Quality review process |
 | standup | Generating standups | Report format + data gathering |
@@ -570,6 +607,7 @@ soulcraft/
 ├── skills/                     # Shared procedural skills
 │   ├── task-management/SKILL.md
 │   ├── discussion/SKILL.md
+│   ├── merge-request/SKILL.md
 │   ├── security-audit/SKILL.md
 │   ├── code-review/SKILL.md
 │   └── standup/SKILL.md
@@ -587,12 +625,18 @@ soulcraft/
 ├── shared/                     # Team coordination state
 │   ├── TASK_BOARD.md
 │   ├── DECISIONS.md
+│   ├── MERGE_REQUESTS.md
 │   └── discussions/
 └── dashboard/                  # Live Next.js dashboard
     ├── server.ts               # Custom server (HTTP + WS + chokidar)
     ├── package.json
     ├── app/                    # Next.js App Router pages + components
+    │   └── components/         # Face, TopBar, AgentDock, KanbanBoard,
+    │                           # OverviewView, MessagesView, DecisionsView,
+    │                           # ReviewsView, AgentDetail, TaskCard, StatusBadge
     └── lib/                    # Parsers, types, hooks, watcher
+        └── parsers/            # task-board, decisions, discussions,
+                                # merge-requests, git-log
 ```
 
 ---

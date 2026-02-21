@@ -15,6 +15,7 @@ export function createWatcher({ projectRoot, onChange }: WatcherOptions): FSWatc
     [
       path.join(sharedDir, "TASK_BOARD.md"),
       path.join(sharedDir, "DECISIONS.md"),
+      path.join(sharedDir, "MERGE_REQUESTS.md"),
       path.join(sharedDir, "discussions", "*.md"),
       gitRefsDir,
       gitHead,

@@ -6,6 +6,7 @@ import next from "next";
 import { parseTaskBoard } from "./lib/parsers/task-board";
 import { parseDecisions } from "./lib/parsers/decisions";
 import { parseDiscussion } from "./lib/parsers/discussions";
+import { parseMergeRequests } from "./lib/parsers/merge-requests";
 import { parseGitLog } from "./lib/parsers/git-log";
 import { deriveAgentStatuses } from "./lib/agents";
 import { createWatcher } from "./lib/watcher";
@@ -15,7 +16,6 @@ import type { DashboardState } from "./lib/types";
 const dev = process.env.NODE_ENV !== "production";
 const port = parseInt(process.env.PORT ?? "3000", 10);
 
-// Project root is one level up from dashboard/
 const projectRoot = path.resolve(__dirname, "..");
 
 const app = next({ dev, dir: __dirname });
@@ -32,10 +32,12 @@ function readFile(filePath: string): string {
 function buildState(): DashboardState {
   const taskBoardPath = path.join(projectRoot, "shared", "TASK_BOARD.md");
   const decisionsPath = path.join(projectRoot, "shared", "DECISIONS.md");
+  const mergeRequestsPath = path.join(projectRoot, "shared", "MERGE_REQUESTS.md");
   const discussionsDir = path.join(projectRoot, "shared", "discussions");
 
   const tasks = parseTaskBoard(readFile(taskBoardPath));
   const decisions = parseDecisions(readFile(decisionsPath));
+  const mergeRequests = parseMergeRequests(readFile(mergeRequestsPath));
 
   let discussions: DashboardState["discussions"] = [];
   try {
@@ -54,6 +56,7 @@ function buildState(): DashboardState {
     tasks,
     decisions,
     discussions,
+    mergeRequests,
     commits,
     agentStatuses,
     lastUpdated: new Date().toISOString(),
@@ -67,17 +70,14 @@ app.prepare().then(() => {
 
   const { wss, broadcast, sendFullState } = createWSServer(server);
 
-  // Send full state on new WebSocket connection
   wss.on("connection", (ws) => {
     sendFullState(ws, buildState());
   });
 
-  // Watch files and broadcast on change
   let debounceTimer: ReturnType<typeof setTimeout> | null = null;
   createWatcher({
     projectRoot,
     onChange: () => {
-      // Debounce rapid file changes
       if (debounceTimer) clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
         broadcast(buildState());
