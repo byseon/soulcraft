@@ -14,6 +14,29 @@ cd dashboard && npm run dev      # start live dashboard at localhost:3000
 
 ![Dashboard Overview](docs/images/dashboard-overview.png)
 
+### Commands
+
+| Command | What it does |
+|---------|-------------|
+| `/soulcraft:init` | Initialize shared state in your project |
+| `/soulcraft:assign koah "task" P1` | Assign a task to an agent with priority |
+| `/soulcraft:status` | Quick terminal status (under 20 lines) |
+| `/soulcraft:board` | Open live dashboard in browser |
+| `/soulcraft:standup` | Daily standup from git + task board |
+| `/soulcraft:sprint name agents...` | Coordinated Agent Teams sprint |
+| `/soulcraft:discuss "topic" agents...` | Structured multi-agent discussion |
+| `/soulcraft:review branch` | Security (Boa) + QA (Tea) review |
+
+### Skills (auto-loaded by agents)
+
+| Skill | Purpose |
+|-------|---------|
+| task-management | Task board format rules and ID assignment |
+| discussion | Discussion thread template and protocol |
+| security-audit | OWASP Top 10 systematic checklist |
+| code-review | Code quality review process |
+| standup | Standup report format and data gathering |
+
 ---
 
 ## Architecture
