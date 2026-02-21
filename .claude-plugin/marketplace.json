@@ -1,0 +1,24 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "soulcraft",
+  "description": "12 AI agents with souls. Multi-agent development system for Claude Code.",
+  "owner": {
+    "name": "Seongjin Park",
+    "email": "contact@seongjinpark.com"
+  },
+  "plugins": [
+    {
+      "name": "soulcraft",
+      "description": "12 AI agents with souls. Multi-agent development system for Claude Code using subagents, skills, and commands.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Seongjin Park",
+        "email": "contact@seongjinpark.com"
+      },
+      "source": "./",
+      "category": "productivity",
+      "homepage": "https://byseon.com",
+      "tags": ["multi-agent", "subagents", "orchestration", "development"]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "soulcraft",
+  "version": "1.0.0",
+  "description": "12 AI agents with souls. Multi-agent development system for Claude Code.",
+  "author": {
+    "name": "Seongjin Park",
+    "email": "contact@seongjinpark.com"
+  },
+  "homepage": "https://byseon.com",
+  "license": "MIT",
+  "keywords": ["multi-agent", "subagents", "orchestration", "development"]
+}

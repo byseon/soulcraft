@@ -1,0 +1,8 @@
+{
+  "name": "soulcraft",
+  "version": "1.0.0",
+  "description": "12 AI agents with souls. Multi-agent development system for Claude Code using subagents, skills, and commands.",
+  "author": "SEON (byseon.com)",
+  "homepage": "https://byseon.com",
+  "keywords": ["multi-agent", "subagents", "orchestration", "development"]
+}
