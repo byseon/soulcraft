@@ -12,6 +12,8 @@ claude plugin add ./soulcraft   # install
 cd dashboard && npm run dev      # start live dashboard at localhost:3000
 ```
 
+![Dashboard Overview](docs/images/dashboard-overview.png)
+
 ---
 
 ## Architecture
@@ -205,11 +207,15 @@ Stats grid (in progress / review / done / active agents), agent grid with status
 - **Backlog** (gray) → **In Progress** (gold) → **Review** (purple) → **Done** (teal)
 - Each card shows priority badge, title, assigned agent face, and project tag.
 
+![Kanban Board](docs/images/dashboard-board.png)
+
 #### Messages
 Activity feed combining git commits and discussion thread summaries.
 
 #### Decisions
 Architecture Decision Records from `shared/DECISIONS.md`.
+
+![Decisions View](docs/images/dashboard-decisions.png)
 
 ### Agent Dock
 
