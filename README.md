@@ -7,7 +7,7 @@
 Soulcraft is a Claude Code plugin that gives you **12 specialized AI agents** — each with a unique persona, role, tool permissions, and persistent memory. HAL (the PM) auto-triages every request and delegates to the right agent. A **live Next.js dashboard** shows your task board, agent statuses, and project activity in real time via WebSocket.
 
 ```bash
-claude plugin add ./soulcraft   # install
+claude --plugin-dir ./soulcraft  # run with local plugin
 /soulcraft:init                  # set up shared state
 cd dashboard && npm run dev      # start live dashboard at localhost:3000
 ```
@@ -88,8 +88,18 @@ graph TB
 
 ## Install
 
+### Local (clone first)
+
 ```bash
-claude plugin add ./soulcraft
+git clone https://github.com/byseon/soulcraft.git
+claude --plugin-dir ./soulcraft
+```
+
+### Via marketplace
+
+```bash
+claude plugin marketplace add byseon/soulcraft
+claude plugin install soulcraft@byseon-soulcraft
 ```
 
 ## Quick Start
